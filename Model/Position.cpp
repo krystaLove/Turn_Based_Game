@@ -32,6 +32,7 @@ void Position::setX(int x) {
     m_Position.first = x;
 }
 
-Position Position::operator=(Position pos) {
-    return pos;
+
+std::ostream &operator<<(std::ostream &os, const Position &pos) {
+    return os << "[" << pos.getX() << ", " << pos.getY() << "]";
 }

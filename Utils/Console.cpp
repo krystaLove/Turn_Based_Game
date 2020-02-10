@@ -1,12 +1,12 @@
 #include "Console.h"
 
-void Console::writeLine(std::string str) {
-    write(str);
+void Console::writeLine(std::string s) {
+    write(s);
     std::cout << std::endl;
 }
 
-void Console::write(std::string str) {
-    std::cout << str;
+void Console::write(std::string s) {
+    std::cout << s;
 }
 
 void Console::clearScreen() {
@@ -18,8 +18,10 @@ void Console::clearScreen() {
 }
 
 void Console::waitForPress() {
-    writeLine("Press any key to continue..");
+    std::string smth;
+    std::cout << "Enter to continue..\n";
     std::cin.get();
+    std::getline(std::cin, smth);
 }
 
 void Console::newLine() {

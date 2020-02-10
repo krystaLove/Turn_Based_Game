@@ -1,9 +1,9 @@
-#include "Console.h"
+
+#include "Controller/Game.h"
 
 int main() {
-    Console::writeLine("Hello!");
-    Console::waitForPress();
-    Console::clearScreen();
-    Console::writeLine("Hi!");
+    Game game;
+    game.run();
+
     return 0;
 }

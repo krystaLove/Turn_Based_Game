@@ -6,6 +6,7 @@
 #define TURN_BASED_GAME_POSITION_H
 
 #include <utility>
+#include <iostream>
 
 class Position {
 private:
@@ -17,11 +18,12 @@ public:
     int getX() const;
     int getY() const;
     std::pair<int, int> getPosition() const;
+
     void setX(int x);
     void setY(int y);
     void setPosition(std::pair<int, int> pos);
 
-    Position operator=(Position pos);
+    friend std::ostream& operator<<(std::ostream& os, const Position& pos);
 };
 
 
