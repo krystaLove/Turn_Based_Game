@@ -2,60 +2,13 @@
 
 #include <algorithm>
 
-void Player::addHero(std::shared_ptr<Hero>& hero) {
+void Player::addHero(std::shared_ptr<Hero> hero) {
     m_Heroes.push_back(hero);
-    refreshOrder();
 }
 
-void Player::refreshOrder() {
-    while(!m_Initiative_Order.empty())
-        m_Initiative_Order.pop();
-
-    std::vector<int> ids;
-    for(int i = 0; i < m_Heroes.size(); ++i) ids.push_back(i);
-
-    for(int i = 0; i < ids.size() - 1; ++i)
-    {
-        for(int j = i + 1; j < ids.size(); ++j)
-        {
-            if(Hero::compareByInitiative(m_Heroes[ids[i]], m_Heroes[ids[j]]) < 0)
-            {
-                std::swap(ids[i], ids[j]);
-            }
-        }
-    }
-
-    for(auto id: ids)
-    {
-        m_Initiative_Order.push(id);
-    }
-}
-
-std::shared_ptr<Hero> Player::getNextTurnHero() {
-    if(m_Initiative_Order.empty()) return nullptr;
-    int id = m_Initiative_Order.front();
-    m_Initiative_Order.pop();
-    std::shared_ptr<Hero> &cur = m_Heroes[id];
-    if(cur->isAlive())
-    {
-        m_Initiative_Order.push(id);
-        return cur;
-    }
-    return getNextTurnHero();
-
-}
 
 const std::shared_ptr<Hero> &Player::getHeroById(int id) {
     return m_Heroes.at(id);
-}
-void Player::showQueue()
-{
-    std::queue<int> tmp = m_Initiative_Order;
-    while(!tmp.empty())
-    {
-        std::cout << tmp.front() << " ";
-        tmp.pop();
-    }
 }
 
 const std::vector<std::shared_ptr<Hero> > &Player::getPlayerTeam() const {
@@ -63,9 +16,58 @@ const std::vector<std::shared_ptr<Hero> > &Player::getPlayerTeam() const {
 }
 
 void Player::showShortInfo() {
+
+    std::cout << "[ " << m_Name << "'s team info ]" << std::endl;
+    std::cout << std::endl;
+
+    if(!isHavingHeroes())
+    {
+        std::cout << "No heroes in the team!" << std::endl << std::endl;
+        return;
+    }
+
     for(int i = 0; i < m_Heroes.size(); ++i)
     {
         printf("[%d]: ", i);
         m_Heroes[i]->showShortInfo();
     }
+    std::cout << std::endl;
+}
+
+const std::string &Player::getName() const {
+    return m_Name;
+}
+
+void Player::setName(const std::string name) {
+    m_Name = name;
+}
+
+bool Player::isPlayerReady() {
+    if(m_Heroes.size() == 0){
+        std::cout << m_Name << " have no heroes in the team!" << std::endl;
+        return false;
+    }
+    return true;
+}
+
+bool Player::isHavingHeroes() {
+    return m_Heroes.size() > 0;
+}
+
+int Player::getTeamSize() const {
+    return m_Heroes.size();
+}
+
+void Player::removeHero(int id) {
+    if(id < 0 || id >= m_Heroes.size()) return;
+    m_Heroes.erase(m_Heroes.begin() + id);
+}
+
+void Player::removeTeam() {
+    m_Heroes.clear();
+}
+
+void Player::setTeam(const std::vector<std::shared_ptr<Hero> > team) {
+    for(auto hero : team)
+        m_Heroes.push_back(hero);
 }

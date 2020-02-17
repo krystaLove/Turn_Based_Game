@@ -17,24 +17,22 @@ Hero::Hero(int health, int armor, int damage, int initiative)
     m_Position = nullptr;
 
     m_Experience = 0;
-    m_Position = std::make_shared<Position>(Position(-1, -1));
-    m_Strike = std::make_shared<RangeStrike>(RangeStrike(m_Damage, m_Position));
+    m_Position = std::make_shared<Position>(Position(0, 0));
+    m_Strike = nullptr;
+
+    std::cout << "Hero created!\n";
 }
 
 //Getters
 
-int Hero::getHealth() const     { return m_Health;      }
-int Hero::getArmor() const      { return m_Armor;       }
-int Hero::getDamage() const     { return m_Damage;      }
-int Hero::getInitiative() const { return m_Initiative;  }
+int Hero::getHealth() const {return m_Health;}
+int Hero::getArmor() const {return m_Armor;}
+int Hero::getDamage() const {return m_Damage;}
+int Hero::getInitiative() const {return m_Initiative;}
 
-const std::shared_ptr<Position>& Hero::getPosition() const {
-    return m_Position;
-}
+const std::shared_ptr<Position>& Hero::getPosition() const {return m_Position;}
 
-bool Hero::isAlive() const {
-    return m_Health > 0;
-}
+bool Hero::isAlive() const {return m_Health > 0;}
 
 void Hero::attack(std::vector<Hero *> &heroes) {
     m_Strike->operator()(heroes);
@@ -71,13 +69,33 @@ void Hero::showFullInfo() const{
     std::cout << "[Initiative: " << getInitiative() << "]\n";
 }
 
-int Hero::compareByInitiative(const std::shared_ptr<Hero> &heroA, const std::shared_ptr<Hero> &heroB) {
-    return heroA->getInitiative() - heroB->getInitiative();
+void Hero::showShortInfo() const{
+    printf("[CL: %12s, HP: %3d, AR: %3d, DMG: %3d, INIT: %3d]\n",
+            getClassName().c_str(), getHealth(), getArmor(), getDamage(), getInitiative());
 }
 
-void Hero::showShortInfo() const{
-    printf("[CL: %12s, HP: %3d, AR: %3d, DMG: %3d, INIT: %3d]\n", getClassName().c_str(), getHealth(), getArmor(), getDamage(), getInitiative());
+int Hero::getClass() const{
+    return m_Class;
 }
+
+std::string Hero::getClassName(Hero::HeroClass type) {
+    switch(type)
+    {
+        case HeroClass::ARCHER:
+            return "Archer";
+        case HeroClass::PEASANT:
+            return "Peasant";
+        case HeroClass::SWORDSMAN:
+            return "Swordsman";
+        case HeroClass::APPRENTICE:
+            return "Apprentice";
+    }
+}
+
+void Hero::setDefend() {
+    m_Defend = !m_Defend;
+}
+
 
 //Strike abstract class
 

@@ -3,6 +3,7 @@
 
 Swordsman::Swordsman() : Hero(100, 0, 25, 50){
     m_Strike = std::make_shared<MeleeStrike>(MeleeStrike(getDamage(), getPosition()));
+    m_Class = HeroClass::SWORDSMAN;
 }
 
 std::string Swordsman::getClassName() const {

@@ -1,4 +1,5 @@
 #include "HealStrike.h"
+#include "../../Controller/BattleField.h"
 
 HealStrike::HealStrike(int damage, const std::shared_ptr<Position> &pos) : Strike(damage, pos) {
 
@@ -16,4 +17,20 @@ void HealStrike::operator()(std::vector<Hero *> &heroes) {
 
 bool HealStrike::isAvailableForStrike(const std::shared_ptr<Hero> &hero) {
     return true;
+}
+
+std::vector<std::shared_ptr<Hero> > HealStrike::getAvailableHeroesForStrike(std::vector<std::vector<int> > matrix, std::vector<std::shared_ptr<Hero> > heroes)
+{
+    std::vector<std::shared_ptr<Hero> > availableForStrike;
+    //std::vector<std::vector<bool> > allowedPlacesForStrike(matrix.size(), std::vector<bool>(matrix[0].size()));
+
+    int cur_x = m_Pos->getX();
+    int cur_y = m_Pos->getY();
+
+    for(auto const &hero : heroes)
+    {
+        if(matrix[cur_x][cur_y] == matrix[hero->getPosition()->getX()][hero->getPosition()->getY()])
+            availableForStrike.push_back(hero);
+    }
+    return availableForStrike;
 }

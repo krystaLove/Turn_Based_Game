@@ -13,3 +13,15 @@ void RangeStrike::operator()(std::vector<Hero *> &heroes) {
     std::cerr << "Range Attack" << std::endl;
     std::cerr << *m_Pos << std::endl;
 }
+
+std::vector<std::shared_ptr<Hero> > RangeStrike::getAvailableHeroesForStrike(std::vector<std::vector<int> > matrix, std::vector<std::shared_ptr<Hero> > heroes)
+{
+    std::vector<std::shared_ptr<Hero> > availableForStrike;
+    //std::vector<std::vector<bool> > allowedPlacesForStrike(matrix.size(), std::vector<bool>(matrix[0].size()));
+
+    for(auto const &hero : heroes)
+    {
+        availableForStrike.push_back(hero);
+    }
+    return availableForStrike;
+}

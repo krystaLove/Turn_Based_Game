@@ -10,6 +10,8 @@ class MeleeStrike
 public:
     MeleeStrike(int damage, const std::shared_ptr<Position>& pos);
     virtual ~MeleeStrike() = default;
+
+    virtual std::vector<std::shared_ptr<Hero> > getAvailableHeroesForStrike(std::vector<std::vector<int> > matrix, std::vector<std::shared_ptr<Hero> > heroes);
     virtual bool isAvailableForStrike(const std::shared_ptr<Hero> & hero);
     virtual void operator() (std::vector<Hero*> & heroes);
 };

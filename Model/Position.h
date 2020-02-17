@@ -1,7 +1,3 @@
-//
-// Created by krystalove on 10.02.2020.
-//
-
 #ifndef TURN_BASED_GAME_POSITION_H
 #define TURN_BASED_GAME_POSITION_H
 

@@ -11,7 +11,7 @@ private:
     bool m_Run;
     void showMainMenu();
 
-    std::vector<std::shared_ptr<Player> >m_Players;
+    std::vector<std::shared_ptr<Player> > m_Players;
 
 public:
     Game();

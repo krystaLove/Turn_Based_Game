@@ -7,25 +7,33 @@
 
 class Player {
 private:
+    std::string m_Name;
+
     std::vector< std::shared_ptr<Hero> > m_Heroes;
-    std::queue<int> m_Initiative_Order;
+
 public:
     Player() = default;
     ~Player() = default;
 
-    void addHero(std::shared_ptr<Hero>& hero);
-    std::shared_ptr<Hero> getNextTurnHero();
+    void addHero(std::shared_ptr<Hero> hero);
     const std::shared_ptr<Hero>& getHeroById(int id);
 
     //Getters
     const std::vector< std::shared_ptr<Hero> >& getPlayerTeam() const;
+    const std::string& getName() const;
+    int getTeamSize() const;
+
+    //Setters
+    void setName(const std::string name);
+    void setTeam(const std::vector< std::shared_ptr<Hero> > team);
+    void removeHero(int id);
+    void removeTeam();
 
     //Info
     void showShortInfo();
-    void refreshOrder();
-    void showQueue();
+    bool isPlayerReady();
+    bool isHavingHeroes();
 
 };
-
 
 #endif //TURN_BASED_GAME_PLAYER_H
