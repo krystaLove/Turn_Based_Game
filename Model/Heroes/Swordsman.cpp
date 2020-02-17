@@ -1,8 +1,9 @@
 #include "Swordsman.h"
 #include "../Strikes/MeleeStrike.h"
 
-Swordsman::Swordsman() : Hero(100, 0, 25, 50){
-    m_Strike = std::make_shared<MeleeStrike>(MeleeStrike(getDamage(), getPosition()));
+Swordsman::Swordsman() : Hero(100, 0, 25, 50, 40, 100){
+    m_Strike = std::make_shared<MeleeStrike>(
+            MeleeStrike(getDamage(), getPosition(), Strike::StrikeType::Enemy, 1));
     m_Class = HeroClass::SWORDSMAN;
 }
 

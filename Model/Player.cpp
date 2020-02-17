@@ -71,3 +71,7 @@ void Player::setTeam(const std::vector<std::shared_ptr<Hero> > team) {
     for(auto hero : team)
         m_Heroes.push_back(hero);
 }
+
+void Player::setHeroById(std::shared_ptr<Hero> &hero, int id) {
+    m_Heroes[id] = hero;
+}

@@ -8,7 +8,6 @@
 class Player {
 private:
     std::string m_Name;
-
     std::vector< std::shared_ptr<Hero> > m_Heroes;
 
 public:
@@ -27,6 +26,7 @@ public:
     void setName(const std::string name);
     void setTeam(const std::vector< std::shared_ptr<Hero> > team);
     void removeHero(int id);
+    void setHeroById(std::shared_ptr<Hero> &hero, int id);
     void removeTeam();
 
     //Info

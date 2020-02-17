@@ -8,12 +8,12 @@ class RangeStrike
         : public Strike
 {
 public:
-    RangeStrike(int damage, const std::shared_ptr<Position>& pos);
+    RangeStrike(int damage, const std::shared_ptr<Position> & pos, StrikeType strikeType, int targets);
     virtual ~RangeStrike() = default;
 
 
     virtual std::vector<std::shared_ptr<Hero> > getAvailableHeroesForStrike(std::vector<std::vector<int> > matrix, std::vector<std::shared_ptr<Hero> >);
-    virtual void operator() (std::vector<Hero*> & heroes);
+    virtual int operator() (std::vector< std::shared_ptr<Hero> > & heroes);
     virtual bool isAvailableForStrike(const std::shared_ptr<Hero> & hero);
 };
 

@@ -13,6 +13,9 @@ class Strike;
 class Hero {
 private:
     int MAX_HEALTH;
+    int MAX_EXPERIENCE;
+
+    int m_ExperienceForKill;
 
     int m_Health;
     int m_Armor;
@@ -32,7 +35,7 @@ public:
     enum HeroClass{PEASANT = 0, APPRENTICE, ARCHER, SWORDSMAN};
 
     //Const | Destr
-    Hero(int health, int armor, int damage, int initiative);
+    Hero(int health, int armor, int damage, int initiative, int exp_kill, int max_exp);
     virtual ~Hero() = default;
 
     //Getters
@@ -40,15 +43,23 @@ public:
     int getArmor() const;
     int getDamage() const;
     int getInitiative() const;
+    int getExperience() const;
+    int getExperienceForKill() const;
     const std::shared_ptr<Position>& getPosition() const;
     int getClass() const;
 
+    bool canLevelUp() const;
+
+    const std::shared_ptr<Strike>& getStrike();
+
     //Setters
     void setPosition(const std::shared_ptr<Position>&);
+    void addExperience(const int exp);
+    void refreshHero();
 
     //Methods
-    void attack(std::vector<Hero*> & heroes);
-    void setDefend();
+    void attack(std::vector< std::shared_ptr<Hero> > & heroes);
+    void setDefend(bool defence);
     void takeDamage(int damage);
     void move(Position& position);
 
@@ -62,17 +73,27 @@ public:
 };
 
 class Strike {
-protected:
-    int m_Damage;
-    std::shared_ptr<Position> m_Pos;
 public:
-    Strike(int damage, const std::shared_ptr<Position> & pos);
+    enum CombatType {Melee, Range, Heal};
+    enum StrikeType {Alias, Enemy};
+
+    Strike(int damage, const std::shared_ptr<Position> & pos, StrikeType strikeType, int targets);
     virtual ~Strike() = default;
+
+    CombatType getCombatType();
+    int getTargets();
 
     virtual std::vector<std::shared_ptr<Hero> > getAvailableHeroesForStrike(std::vector<std::vector<int> > matrix,
             std::vector<std::shared_ptr<Hero> >) = 0;
     virtual bool isAvailableForStrike(const std::shared_ptr<Hero> & hero) = 0;
-    virtual void operator() (std::vector<Hero*> & heroes) = 0;
+    virtual int operator() (std::vector< std::shared_ptr<Hero> > & heroes) = 0;
+
+protected:
+    int m_Damage;
+    std::shared_ptr<Position> m_Pos;
+    CombatType m_CombatType;
+    StrikeType m_StrikeType;
+    int m_Targets;
 };
 
 
