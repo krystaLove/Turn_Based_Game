@@ -27,7 +27,8 @@ bool HealStrike::isAvailableForStrike(const std::shared_ptr<Hero> &hero) {
     return true;
 }
 
-std::vector<std::shared_ptr<Hero> > HealStrike::getAvailableHeroesForStrike(std::vector<std::vector<int> > matrix, std::vector<std::shared_ptr<Hero> > heroes)
+std::vector<std::shared_ptr<Hero> > HealStrike::getAvailableHeroesForStrike(BattleField::StatusMatrix matrix,
+        std::vector<std::shared_ptr<Hero> > heroes)
 {
     std::vector<std::shared_ptr<Hero> > availableForStrike;
 

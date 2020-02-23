@@ -2,7 +2,7 @@
 #define TURN_BASED_GAME_HEALSTRIKE_H
 
 
-#include "../Hero.h"
+#include "../Strike.h"
 
 class HealStrike
         : public Strike
@@ -12,10 +12,11 @@ public:
     virtual ~HealStrike() = default;
 
 
-    virtual std::vector<std::shared_ptr<Hero> > getAvailableHeroesForStrike(std::vector<std::vector<int> > matrix, std::vector<std::shared_ptr<Hero> >);
-    virtual int operator() (std::vector< std::shared_ptr<Hero> > & heroes);
+    std::vector<std::shared_ptr<Hero> > getAvailableHeroesForStrike(BattleField::StatusMatrix,
+            std::vector<std::shared_ptr<Hero> >) final;
+    int operator() (std::vector< std::shared_ptr<Hero> > & heroes) final;
 
-    virtual bool isAvailableForStrike(const std::shared_ptr<Hero> & hero);
+    bool isAvailableForStrike(const std::shared_ptr<Hero> & hero) final;
 };
 
 

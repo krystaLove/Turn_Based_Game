@@ -2,6 +2,7 @@
 #define TURN_BASED_GAME_CONSOLE_H
 
 #include <iostream>
+#include <iostream>
 
 struct Console {
     static void writeLine(std::string str);

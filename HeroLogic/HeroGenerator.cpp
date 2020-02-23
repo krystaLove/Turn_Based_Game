@@ -6,23 +6,27 @@
 #include "../Configs/GameConfig.h"
 #include "../Utils/Console.h"
 
-std::shared_ptr<Hero> HeroGenerator::generateHero(int type) {
+#include <random>
+
+std::shared_ptr<Hero> HeroGenerator::generateHero(Hero::Class type) {
     switch (type)
     {
-        case Hero::HeroClass::ARCHER:
+        case Hero::Class::ARCHER:
             return std::make_shared<Archer>(Archer());
-        case Hero::HeroClass::APPRENTICE:
+        case Hero::Class::APPRENTICE:
             return std::make_shared<Apprentice>(Apprentice());
-        case Hero::HeroClass::SWORDSMAN:
+        case Hero::Class::SWORDSMAN:
             return std::make_shared<Swordsman>(Swordsman());
-        case Hero::HeroClass::PEASANT:
+        case Hero::Class::PEASANT:
+            return std::make_shared<Peasant>(Peasant());
+        case Hero::Class::NONE:
             return std::make_shared<Peasant>(Peasant());
     }
 }
 
 std::shared_ptr<Hero> HeroGenerator::generateRandomHero() {
-    int random = rand() % (Hero::HeroClass::SWORDSMAN + 1);
-    return generateHero(random);
+    int random = rand() % (static_cast<int>(Hero::Class::SWORDSMAN) + 1);
+    return generateHero(static_cast<Hero::Class>(random));
 }
 
 std::vector<std::shared_ptr<Hero> > HeroGenerator::generateRandomTeam() {
@@ -34,3 +38,20 @@ std::vector<std::shared_ptr<Hero> > HeroGenerator::generateRandomTeam() {
     }
     return heroes;
 }
+
+char HeroGenerator::getCharForHero(Hero::Class heroClass) {
+    switch(heroClass)
+    {
+        case Hero::Class::SWORDSMAN:
+            return 'S';
+        case Hero::Class::APPRENTICE:
+            return 'A';
+        case Hero::Class::PEASANT:
+            return 'P';
+        case Hero::Class::ARCHER:
+            return 'R';
+        case Hero::Class::NONE:
+            return '.';
+    }
+}
+

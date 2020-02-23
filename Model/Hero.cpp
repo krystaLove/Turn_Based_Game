@@ -1,5 +1,5 @@
 #include "Hero.h"
-#include "Strikes/RangeStrike.h"
+#include "Strike.h"
 
 //Hero abstract class
 
@@ -7,8 +7,8 @@ const int MAX_ARMOR = 100;
 
 Hero::Hero(int health, int armor, int damage, int initiative, int exp_kill, int max_exp)
 {
-    MAX_HEALTH = health;
-    MAX_EXPERIENCE = max_exp;
+    m_Max_Health = health;
+    m_Max_Experience = max_exp;
 
     m_ExperienceForKill = exp_kill;
 
@@ -22,6 +22,7 @@ Hero::Hero(int health, int armor, int damage, int initiative, int exp_kill, int 
     m_Experience = 0;
     m_Position = std::make_shared<Position>(Position(0, 0));
     m_Strike = nullptr;
+    m_Class = Class::NONE;
 
     std::cout << "Hero created!\n";
 }
@@ -45,11 +46,11 @@ void Hero::takeDamage(int damage) {
     if(damage <= 0)
     {
         m_Health -= damage;
-        if(m_Health > MAX_HEALTH)
-            m_Health = MAX_HEALTH;
+        if(m_Health > m_Max_Health)
+            m_Health = m_Max_Health;
         return;
     }
-    float real_damage = static_cast<float>(damage);
+    auto real_damage = static_cast<float>(damage);
     if(m_Defend) real_damage /= 2;
     real_damage -= (real_damage / MAX_ARMOR) * static_cast<float>(m_Armor);
     m_Health -= static_cast<int>(real_damage);
@@ -98,20 +99,20 @@ void Hero::showShortInfo() const{
             getClassName().c_str(), getHealth(), getArmor(), getDamage(), getInitiative(), strikeType.c_str());
 }
 
-int Hero::getClass() const{
+Hero::Class Hero::getClass() const{
     return m_Class;
 }
 
-std::string Hero::getClassName(Hero::HeroClass type) {
+std::string Hero::getClassName(Hero::Class type) {
     switch(type)
     {
-        case HeroClass::ARCHER:
+        case Class::ARCHER:
             return "Archer";
-        case HeroClass::PEASANT:
+        case Class::PEASANT:
             return "Peasant";
-        case HeroClass::SWORDSMAN:
+        case Class::SWORDSMAN:
             return "Swordsman";
-        case HeroClass::APPRENTICE:
+        case Class::APPRENTICE:
             return "Apprentice";
     }
 }
@@ -129,12 +130,12 @@ int Hero::getExperience() const {
 }
 
 bool Hero::canLevelUp() const {
-    return m_Experience >= MAX_EXPERIENCE;
+    return m_Experience >= m_Max_Experience;
 }
 
 void Hero::addExperience(const int exp) {
     m_Experience += exp;
-    m_Experience = m_Experience > MAX_EXPERIENCE ? MAX_EXPERIENCE : m_Experience;
+    m_Experience = m_Experience > m_Max_Experience ? m_Max_Experience : m_Experience;
 }
 
 int Hero::getExperienceForKill() const {
@@ -143,22 +144,8 @@ int Hero::getExperienceForKill() const {
 
 void Hero::refreshHero() {
     m_Defend = false;
-    m_Health = MAX_HEALTH;
+    m_Health = m_Max_Health;
 }
 
 //Strike abstract class
 
-Strike::Strike(int damage, const std::shared_ptr<Position> & pos, StrikeType strikeType, int targets) {
-    m_Damage = damage;
-    m_Pos = pos;
-    m_Targets = targets;
-    m_StrikeType = strikeType;
-}
-
-Strike::CombatType Strike::getCombatType() {
-    return m_CombatType;
-}
-
-int Strike::getTargets() {
-    return m_Targets;
-}

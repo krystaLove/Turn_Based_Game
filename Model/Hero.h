@@ -11,9 +11,49 @@
 class Strike;
 
 class Hero {
+
+public:
+    enum class Class{NONE = -1, PEASANT = 0, APPRENTICE, ARCHER, SWORDSMAN};
+
+    Hero(int health, int armor, int damage, int initiative, int exp_kill, int max_exp);
+    virtual ~Hero() = default;
+
+    //Getters
+    int getHealth() const;
+    int getArmor() const;
+    int getDamage() const;
+    int getInitiative() const;
+    int getExperience() const;
+    int getExperienceForKill() const;
+    const std::shared_ptr<Position>& getPosition() const;
+    Class getClass() const;
+
+    bool canLevelUp() const;
+
+    const std::shared_ptr<Strike>& getStrike();
+
+    //Setters
+    void setPosition(const std::shared_ptr<Position>&);
+    void addExperience(int exp);
+    void refreshHero();
+
+    //Methods
+    void attack(std::vector< std::shared_ptr<Hero> > & heroes);
+    void setDefend(bool defence);
+    void takeDamage(int damage);
+    void move(Position& position);
+
+    bool isAlive() const;
+
+    //Info
+    void showFullInfo() const;
+    void showShortInfo() const;
+    virtual std::string getClassName() const = 0;
+    static std::string getClassName(Class type);
+
 private:
-    int MAX_HEALTH;
-    int MAX_EXPERIENCE;
+    int m_Max_Health;
+    int m_Max_Experience;
 
     int m_ExperienceForKill;
 
@@ -29,71 +69,8 @@ private:
 
 protected:
     std::shared_ptr<Strike> m_Strike;
-    int m_Class;
+    Class m_Class;
 
-public:
-    enum HeroClass{PEASANT = 0, APPRENTICE, ARCHER, SWORDSMAN};
-
-    //Const | Destr
-    Hero(int health, int armor, int damage, int initiative, int exp_kill, int max_exp);
-    virtual ~Hero() = default;
-
-    //Getters
-    int getHealth() const;
-    int getArmor() const;
-    int getDamage() const;
-    int getInitiative() const;
-    int getExperience() const;
-    int getExperienceForKill() const;
-    const std::shared_ptr<Position>& getPosition() const;
-    int getClass() const;
-
-    bool canLevelUp() const;
-
-    const std::shared_ptr<Strike>& getStrike();
-
-    //Setters
-    void setPosition(const std::shared_ptr<Position>&);
-    void addExperience(const int exp);
-    void refreshHero();
-
-    //Methods
-    void attack(std::vector< std::shared_ptr<Hero> > & heroes);
-    void setDefend(bool defence);
-    void takeDamage(int damage);
-    void move(Position& position);
-
-    bool isAlive() const;
-
-    //Info
-    void showFullInfo() const;
-    void showShortInfo() const;
-    virtual std::string getClassName() const = 0;
-    static std::string getClassName(HeroClass type);
-};
-
-class Strike {
-public:
-    enum CombatType {Melee, Range, Heal};
-    enum StrikeType {Alias, Enemy};
-
-    Strike(int damage, const std::shared_ptr<Position> & pos, StrikeType strikeType, int targets);
-    virtual ~Strike() = default;
-
-    CombatType getCombatType();
-    int getTargets();
-
-    virtual std::vector<std::shared_ptr<Hero> > getAvailableHeroesForStrike(std::vector<std::vector<int> > matrix,
-            std::vector<std::shared_ptr<Hero> >) = 0;
-    virtual bool isAvailableForStrike(const std::shared_ptr<Hero> & hero) = 0;
-    virtual int operator() (std::vector< std::shared_ptr<Hero> > & heroes) = 0;
-
-protected:
-    int m_Damage;
-    std::shared_ptr<Position> m_Pos;
-    CombatType m_CombatType;
-    StrikeType m_StrikeType;
-    int m_Targets;
 };
 
 

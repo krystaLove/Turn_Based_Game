@@ -9,7 +9,7 @@ class Archer
 {
 public:
     Archer();
-    virtual std::string getClassName() const;
+    std::string getClassName() const final;
 };
 
 

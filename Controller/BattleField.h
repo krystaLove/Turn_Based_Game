@@ -9,27 +9,25 @@
 class BattleField {
 
 public:
-    enum Status{ALIAS = 110, ENEMY, EMPTY, DEAD};
-    enum Mode{STATUS, HEROES};
-
-    void changeMode();
-
-    typedef std::vector<std::vector<int> > StatusMatrix;
+    enum class Status{ALIAS = 110, ENEMY, EMPTY, DEAD};
+    enum class Mode{STATUS, HEROES};
 
     BattleField(const std::vector<std::shared_ptr<Hero> > & heroes_alias,
-            const std::vector<std::shared_ptr<Hero> > &heroes_enemy);
+                const std::vector<std::shared_ptr<Hero> > &heroes_enemy);
     ~BattleField() = default;
 
-    static char getCharForHero(int heroClass);
+    using StatusMatrix = std::vector<std::vector<Status> >;
+    using HeroMatrix = std::vector<std::vector<Hero::Class> >;
+
+    const StatusMatrix& getStatusMatrix() const;
 
     void showLegend();
-
     void drawField();
-    const StatusMatrix& getStatusMatrix() const;
+    void changeMode();
 
 private:
     StatusMatrix m_StatusField;
-    StatusMatrix m_HeroField;
+    HeroMatrix m_HeroField;
     Mode m_Mode;
     std::vector<std::shared_ptr<Hero> > m_Heroes_Alias, m_Heroes_Enemy;
 
@@ -37,6 +35,5 @@ private:
     void _drawStatusField();
     void _drawHeroField();
 };
-
 
 #endif //TURN_BASED_GAME_BATTLEFIELD_H

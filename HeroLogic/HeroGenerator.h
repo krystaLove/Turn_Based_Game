@@ -5,9 +5,11 @@
 #include "../Model/Hero.h"
 
 struct HeroGenerator {
-    static std::shared_ptr<Hero> generateHero(int type);
+    static std::shared_ptr<Hero> generateHero(Hero::Class);
     static std::shared_ptr<Hero> generateRandomHero();
     static std::vector<std::shared_ptr<Hero> > generateRandomTeam();
+
+    static char getCharForHero(Hero::Class);
 
 };
 

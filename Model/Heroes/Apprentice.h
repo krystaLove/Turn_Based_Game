@@ -9,7 +9,7 @@ class Apprentice
 {
 public:
     Apprentice();
-    virtual std::string getClassName() const;
+    std::string getClassName() const final;
 };
 
 

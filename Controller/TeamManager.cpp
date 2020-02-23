@@ -23,15 +23,15 @@ void TeamManager::_showMenu() {
     Console::writeLine("[1]. Construct team from trash");
     Console::writeLine("[2]. Show Team");
     Console::writeLine("[3]. Add Hero");
-    Console::writeLine("[4]. Change Hero");
-    Console::writeLine("[5]. Remove Hero\n");
-    Console::writeLine("[6]. Back");
+    Console::writeLine("[4]. Remove Hero\n");
+    Console::writeLine("[5]. Back");
 }
 
 void TeamManager::update() {
     _showMenu();
-    int option = MenuUtils::getInput(MENU_TYPE::CONSTRUCT, MENU_TYPE::EXIT);
-    switch(option)
+
+    int option = MenuUtils::getInput(static_cast<int>(MENU_TYPE::CONSTRUCT), static_cast<int>(MENU_TYPE::EXIT));
+    switch(static_cast<MENU_TYPE>(option))
     {
         case MENU_TYPE::CONSTRUCT:
         {
@@ -84,6 +84,8 @@ void TeamManager::update() {
     Console::waitForPress();
     Console::clearScreen();
 }
+
+//Manager options
 
 void TeamManager::_addRandomHero(int player_id) {
     std::shared_ptr<Player> &player = m_Players[player_id];
@@ -140,15 +142,16 @@ void TeamManager::_constructTeam(int player_id) {
         {
             player->removeTeam();
 
-            printf("[%d]. Peasant\n", Hero::HeroClass::PEASANT);
-            printf("[%d]. Apprentice\n", Hero::HeroClass::APPRENTICE);
-            printf("[%d]. Archer\n", Hero::HeroClass::ARCHER);
-            printf("[%d]. Swordsman\n", Hero::HeroClass::SWORDSMAN);
+            printf("[%d]. Peasant\n", Hero::Class::PEASANT);
+            printf("[%d]. Apprentice\n", Hero::Class::APPRENTICE);
+            printf("[%d]. Archer\n", Hero::Class::ARCHER);
+            printf("[%d]. Swordsman\n", Hero::Class::SWORDSMAN);
 
             for(int i = 0; i < MAX_HEROES_PER_PLAYER; ++i)
             {
-                int heroClass = MenuUtils::getInput(Hero::HeroClass::PEASANT, Hero::HeroClass::SWORDSMAN);
-                player->addHero(HeroGenerator::generateHero(heroClass));
+                int classPick = MenuUtils::getInput(static_cast<int>(Hero::Class::PEASANT),
+                                                    static_cast<int>(Hero::Class::SWORDSMAN));
+                player->addHero(HeroGenerator::generateHero(static_cast<Hero::Class>(classPick)));
             }
 
             player->showShortInfo();

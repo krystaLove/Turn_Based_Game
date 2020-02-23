@@ -29,7 +29,8 @@ int RangeStrike::operator()(std::vector< std::shared_ptr<Hero> > & heroes) {
     return exp;
 }
 
-std::vector<std::shared_ptr<Hero> > RangeStrike::getAvailableHeroesForStrike(std::vector<std::vector<int> > matrix, std::vector<std::shared_ptr<Hero> > heroes)
+std::vector<std::shared_ptr<Hero> > RangeStrike::getAvailableHeroesForStrike(BattleField::StatusMatrix matrix,
+        std::vector<std::shared_ptr<Hero> > heroes)
 {
     std::vector<std::shared_ptr<Hero> > availableForStrike;
 

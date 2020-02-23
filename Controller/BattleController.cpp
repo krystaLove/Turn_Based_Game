@@ -197,8 +197,6 @@ bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
     available.insert(available.end(), firstPlayerTeam.begin(), firstPlayerTeam.end());
     available.insert(available.end(), secondPlayerTeam.begin(), secondPlayerTeam.end());
 
-    bool apply = false;
-
     if(available.empty())
     {
         Console::writeLine("There is no heroes current hero can strike!");
@@ -206,7 +204,7 @@ bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
         return false;
     }
 
-    while(!apply)
+    while(true)
     {
         Console::writeLine("[ Current Hero ]\n");
         curHero->showShortInfo();
@@ -379,7 +377,7 @@ void BattleController::_endBattle(std::shared_ptr<Player> &player) {
         Console::writeLine("[ Your hero can level up! ]");
         hero->showShortInfo();
 
-        std::vector<int> ways = levelUp.getWaysToLevelUp(hero->getClass());
+        std::vector<Hero::Class> ways = levelUp.getWaysToLevelUp(hero->getClass());
         if(ways.empty())
         {
             Console::writeLine("There is no ways to transform this hero");
@@ -393,22 +391,22 @@ void BattleController::_endBattle(std::shared_ptr<Player> &player) {
             std::cout << "[" << i + 1 << "]. ";
             switch (ways[i])
             {
-                case Hero::HeroClass::APPRENTICE:
+                case Hero::Class::APPRENTICE:
                 {
                     std::cout << "Apprentice";
                     break;
                 }
-                case Hero::HeroClass::ARCHER:
+                case Hero::Class::ARCHER:
                 {
                     std::cout << "Archer";
                     break;
                 }
-                case Hero::HeroClass::SWORDSMAN:
+                case Hero::Class::SWORDSMAN:
                 {
                     std::cout << "Swordsman";
                     break;
                 }
-                case Hero::HeroClass::PEASANT:
+                case Hero::Class::PEASANT:
                 {
                     std::cout << "Peasant";
                     break;

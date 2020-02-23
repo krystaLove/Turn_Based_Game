@@ -2,12 +2,13 @@
 #include "BattleField.h"
 #include "../Utils/Console.h"
 #include "../Configs/GameConfig.h"
+#include "../HeroLogic/HeroGenerator.h"
 
 BattleField::BattleField(const std::vector<std::shared_ptr<Hero> > &heroes_alias,
                          const std::vector<std::shared_ptr<Hero> > &heroes_enemy) {
 
-    m_StatusField = BattleField::StatusMatrix (FIELD_H, std::vector<int> (FIELD_W, Status::EMPTY));
-    m_HeroField = BattleField::StatusMatrix (FIELD_H, std::vector<int> (FIELD_W, Status::EMPTY));
+    m_StatusField = std::vector(FIELD_H, std::vector<Status> (FIELD_W, Status::EMPTY));
+    m_HeroField = std::vector(FIELD_H, std::vector<Hero::Class> (FIELD_W, Hero::Class::NONE));
 
     m_Heroes_Alias = heroes_alias;
     m_Heroes_Enemy = heroes_enemy;
@@ -17,14 +18,8 @@ BattleField::BattleField(const std::vector<std::shared_ptr<Hero> > &heroes_alias
 
 void BattleField::_refreshField() {
 
-    //Refresh Status
-    for(auto &row : m_StatusField)
-        for(auto &x : row)
-            x = Status::EMPTY;
-
-    for(auto &row : m_HeroField)
-        for(auto &x : row)
-            x = Status::EMPTY;
+    m_StatusField = std::vector(FIELD_H, std::vector<Status> (FIELD_W, Status::EMPTY));
+    m_HeroField = std::vector(FIELD_H, std::vector<Hero::Class> (FIELD_W, Hero::Class::NONE));
 
     for(auto &hero : m_Heroes_Alias) {
         int hero_x = hero->getPosition()->getX();
@@ -92,35 +87,22 @@ void BattleField::_drawStatusField() {
 }
 
 void BattleField::_drawHeroField() {
-    for(int row = 0; row < m_HeroField.size(); ++row)
+    for(auto &row : m_HeroField)
     {
         std::cout << " ";
-        for(int x = 0; x < m_HeroField[row].size(); ++x)
+        for(auto &posStatus : row)
         {
-            if(m_StatusField[row][x] == Status::EMPTY)
+            if(posStatus == Hero::Class::NONE)
             {
                 std::cout << ".";
                 continue;
             }
-            std::cout << getCharForHero(m_HeroField[row][x]);
+            std::cout << HeroGenerator::getCharForHero(posStatus);
         }
         std::cout << std::endl;
     }
 }
 
-char BattleField::getCharForHero(int heroClass) {
-    switch(heroClass)
-    {
-        case Hero::HeroClass::SWORDSMAN:
-            return 'S';
-        case Hero::HeroClass::APPRENTICE:
-            return 'A';
-        case Hero::HeroClass::PEASANT:
-            return 'P';
-        case Hero::HeroClass::ARCHER:
-            return 'R';
-    }
-}
 
 void BattleField::changeMode() {
     if (m_Mode == Mode::STATUS)
@@ -135,7 +117,7 @@ void BattleField::showLegend() {
     Console::newLine();
     Console::writeLine("[ Legend of Battle field ]");
 
-    std::set<int> usingHeroes;
+    std::set<Hero::Class> usingHeroes;
     for(int row = 0; row < m_HeroField.size(); ++row)
     {
         for(int x = 0; x < m_HeroField[row].size(); ++x)
@@ -146,6 +128,6 @@ void BattleField::showLegend() {
     }
     for(auto type : usingHeroes)
     {
-        std::cout << getCharForHero(type) << " - " << Hero::getClassName(static_cast<Hero::HeroClass>(type)) << "\n";
+        std::cout << HeroGenerator::getCharForHero(type) << " - " << Hero::getClassName(static_cast<Hero::Class>(type)) << "\n";
     }
 }

@@ -8,7 +8,8 @@ MeleeStrike::MeleeStrike(int damage, const std::shared_ptr<Position> &pos, Strik
     m_CombatType = CombatType::Melee;
 }
 
-std::vector<std::shared_ptr<Hero> > MeleeStrike::getAvailableHeroesForStrike(std::vector<std::vector<int> > matrix, std::vector<std::shared_ptr<Hero> > heroes)
+std::vector<std::shared_ptr<Hero> > MeleeStrike::getAvailableHeroesForStrike(BattleField::StatusMatrix matrix,
+        std::vector<std::shared_ptr<Hero> > heroes)
 {
     std::vector<std::shared_ptr<Hero> > availableForStrike;
 

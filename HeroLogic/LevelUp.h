@@ -6,13 +6,13 @@
 
 class LevelUp {
 private:
-    std::map<int, std::vector<int> > m_HeroHierarchy;
+    std::map<Hero::Class, std::vector<Hero::Class> > m_HeroHierarchy;
     void _initHierarchy();
 public:
     LevelUp();
     ~LevelUp() = default;
 
-    std::vector<int>& getWaysToLevelUp(int heroClass);
+    std::vector<Hero::Class>& getWaysToLevelUp(Hero::Class hero);
 };
 
 

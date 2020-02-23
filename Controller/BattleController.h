@@ -4,6 +4,7 @@
 
 #include <vector>
 #include "../Model/Player.h"
+#include "../Model/Strike.h"
 #include "BattleField.h"
 
 class BattleController {

@@ -6,8 +6,7 @@
 
 class TeamManager{
 private:
-    enum TYPE {MANAGE = 1, RANDOM = 2};
-    enum MENU_TYPE{CONSTRUCT = 1, SHOW, ADD, CHANGE, REMOVE, EXIT};
+    enum class MENU_TYPE{CONSTRUCT = 1, SHOW, ADD, REMOVE, EXIT};
 
     std::vector<std::shared_ptr<Player> > m_Players;
     bool m_Run;
@@ -21,6 +20,8 @@ private:
 
 public:
     TeamManager(std::vector<std::shared_ptr<Player> > & players);
+    ~TeamManager() = default;
+
     void run();
     void update();
 };
