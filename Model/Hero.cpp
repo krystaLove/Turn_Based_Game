@@ -1,5 +1,5 @@
 #include "Hero.h"
-#include "Strike.h"
+#include "Strikes/Strike.h"
 
 //Hero abstract class
 
@@ -20,7 +20,7 @@ Hero::Hero(int health, int armor, int damage, int initiative, int exp_kill, int 
     m_Position = nullptr;
 
     m_Experience = 0;
-    m_Position = std::make_shared<Position>(Position(0, 0));
+    m_Position = std::make_shared<Position>(0, 0);
     m_Strike = nullptr;
     m_Class = Class::NONE;
 
@@ -146,6 +146,3 @@ void Hero::refreshHero() {
     m_Defend = false;
     m_Health = m_Max_Health;
 }
-
-//Strike abstract class
-

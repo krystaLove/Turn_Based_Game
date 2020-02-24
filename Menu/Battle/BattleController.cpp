@@ -1,7 +1,9 @@
 #include "BattleController.h"
-#include "../Utils/Console.h"
-#include "../Utils/MenuUtils.h"
-#include "../HeroLogic/LevelUp.h"
+#include "../../Utils/Console.h"
+#include "../../Utils/MenuUtils.h"
+#include "../../HeroLogic/LevelUp.h"
+
+#include "../../Model/Strikes/Strike.h"
 
 #include <algorithm>
 #include <set>
@@ -10,7 +12,6 @@ BattleController::BattleController(std::vector<std::shared_ptr<Player> > &player
     m_Players = players;
     m_Run = false;
     m_Turn = 0;
-    m_CurrentPlayer = 0;
 
     m_BattleField = std::make_shared<BattleField>(
             BattleField(players[0]->getPlayerTeam(), players[1]->getPlayerTeam()));
@@ -55,8 +56,8 @@ void BattleController::update() {
     std::cout << "Position: " << *currentHero->getPosition() << "\n\n";
     _showMenu();
 
-    int pick = MenuUtils::getInput(MENU_OPTION::ATTACK, MENU_OPTION::EXIT);
-    switch (pick)
+    int pick = MenuUtils::getInput(static_cast<int>(MENU_OPTION::ATTACK), static_cast<int>(MENU_OPTION::CHANGE_MODE));
+    switch (static_cast<MENU_OPTION>(pick))
     {
         case MENU_OPTION::ATTACK:
         {
@@ -107,7 +108,8 @@ void BattleController::update() {
 
 void BattleController::_showBattleInfo() {
     Console::writeLine("= Battle =");
-    printf("[ Turn : %d ]\n\n", m_Turn);
+    std::cout << "[ Turn : " << m_Turn + 1 << " ]\n\n";
+
     m_BattleField->drawField();
     Console::newLine();
 }
@@ -115,14 +117,14 @@ void BattleController::_showBattleInfo() {
 void BattleController::_initOrder() {
     for(auto &hero : m_Players[0]->getPlayerTeam())
     {
-        m_HeroOrder.push_back({hero, 0});
+        m_HeroOrder.emplace_back(hero, 0);
     }
     for(auto &hero : m_Players[1]->getPlayerTeam())
     {
-        m_HeroOrder.push_back({hero, 1});
+        m_HeroOrder.emplace_back(hero, 1);
     }
     sort(m_HeroOrder.begin(), m_HeroOrder.end(),
-            [](std::pair<std::shared_ptr<Hero>, int> a, std::pair<std::shared_ptr<Hero>, int> b)
+            [](std::pair<std::shared_ptr<Hero>, int> &a, std::pair<std::shared_ptr<Hero>, int> &b)
             {
                 return a.first->getInitiative() > b.first->getInitiative();
             }
@@ -190,9 +192,11 @@ bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
     available.reserve(m_Players[0]->getPlayerTeam().size() + m_Players[1]->getPlayerTeam().size());
 
     auto firstPlayerTeam = strike->getAvailableHeroesForStrike
-            (m_BattleField->getStatusMatrix(), m_Players[0]->getPlayerTeam());
+            (m_BattleField->getStatusMatrix(),
+             const_cast<std::vector<std::shared_ptr<Hero>> &>(m_Players[0]->getPlayerTeam()));
     auto secondPlayerTeam = strike->getAvailableHeroesForStrike
-            (m_BattleField->getStatusMatrix(), m_Players[1]->getPlayerTeam());
+            (m_BattleField->getStatusMatrix(),
+             const_cast<std::vector<std::shared_ptr<Hero>> &>(m_Players[1]->getPlayerTeam()));
 
     available.insert(available.end(), firstPlayerTeam.begin(), firstPlayerTeam.end());
     available.insert(available.end(), secondPlayerTeam.begin(), secondPlayerTeam.end());
@@ -244,9 +248,9 @@ bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
         Console::newLine();
         _attackMenu();
 
-        int pick = MenuUtils::getInput(ATTACK_OPTION::APPLY, ATTACK_OPTION::BACK);
+        int pick = MenuUtils::getInput(static_cast<int>(ATTACK_OPTION::APPLY), static_cast<int>(ATTACK_OPTION::BACK));
 
-        switch(pick)
+        switch(static_cast<ATTACK_OPTION>(pick))
         {
             case ATTACK_OPTION::APPLY:
             {
@@ -257,6 +261,7 @@ bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
                     break;
                 }
                 std::vector<std::shared_ptr<Hero> > toStrikeApply;
+                toStrikeApply.reserve(toStrike.size());
                 for(auto &pair : toStrike)
                     toStrikeApply.push_back(pair.first);
 
@@ -289,7 +294,7 @@ bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
                     break;
                 }
                 chosen.insert(hero_pick);
-                toStrike.push_back({available[hero_pick - 1], hero_pick});
+                toStrike.emplace_back(available[hero_pick - 1], hero_pick);
                 break;
             }
             case ATTACK_OPTION::REMOVE:
@@ -323,7 +328,6 @@ bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
 
         }
         Console::clearScreen();
-
     }
 
 }
@@ -369,8 +373,6 @@ void BattleController::_endBattle(std::shared_ptr<Player> &player) {
 
     for(int hero_id = 0; hero_id < player->getPlayerTeam().size(); ++hero_id)
     {
-        Console::clearScreen();
-
         auto hero = player->getPlayerTeam().at(hero_id);
         if(!hero->canLevelUp()) continue;
 
@@ -382,6 +384,7 @@ void BattleController::_endBattle(std::shared_ptr<Player> &player) {
         {
             Console::writeLine("There is no ways to transform this hero");
             Console::waitForPress();
+            Console::clearScreen();
             continue;
         }
 
@@ -419,8 +422,10 @@ void BattleController::_endBattle(std::shared_ptr<Player> &player) {
         int pick = MenuUtils::getInput(1, ways.size() + 1);
         if(pick == ways.size() + 1) continue;
 
-        auto tranformedHero = HeroGenerator::generateHero(ways[pick - 1]);
-        player->setHeroById(tranformedHero, hero_id);
+        auto transformedHero = HeroGenerator::generateHero(ways[pick - 1]);
+        player->setHeroById(transformedHero, hero_id);
+
+        Console::clearScreen();
     }
     m_Run = false;
 }

@@ -3,20 +3,17 @@
 
 
 #include <vector>
-#include "../Model/Player.h"
-#include "../Model/Strike.h"
 #include "BattleField.h"
+#include "../../Model/Player.h"
 
 class BattleController {
 
 private:
-    enum MENU_OPTION{ATTACK = 1, DEFEND, ORDER, LEGEND, CHANGE_MODE, INFO, EXIT};
-    enum ATTACK_OPTION{APPLY = 1, ADD, REMOVE, BACK};
-    enum END_TYPE{CONTINUE, ONE_WIN, SECOND_WIN};
+    enum class MENU_OPTION{ATTACK = 1, DEFEND, ORDER, LEGEND, CHANGE_MODE, INFO, EXIT};
+    enum class ATTACK_OPTION{APPLY = 1, ADD, REMOVE, BACK};
+    enum class END_TYPE{CONTINUE, ONE_WIN, SECOND_WIN};
 
     bool m_Run;
-
-    int m_CurrentPlayer;
     int m_Turn;
 
     std::shared_ptr<BattleField> m_BattleField;
@@ -51,7 +48,6 @@ public:
 
     void run();
     void update();
-
 
 };
 

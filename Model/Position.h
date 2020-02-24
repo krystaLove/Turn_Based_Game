@@ -22,5 +22,4 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Position& pos);
 };
 
-
 #endif //TURN_BASED_GAME_POSITION_H

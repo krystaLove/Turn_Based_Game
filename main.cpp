@@ -1,4 +1,4 @@
-#include "Controller/Game.h"
+#include "Game.h"
 
 using namespace std;
 

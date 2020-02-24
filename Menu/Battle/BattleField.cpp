@@ -1,8 +1,8 @@
 #include <set>
 #include "BattleField.h"
-#include "../Utils/Console.h"
-#include "../Configs/GameConfig.h"
-#include "../HeroLogic/HeroGenerator.h"
+#include "../../Configs/GameConfig.h"
+#include "../../Utils/Console.h"
+#include "../../HeroLogic/HeroGenerator.h"
 
 BattleField::BattleField(const std::vector<std::shared_ptr<Hero> > &heroes_alias,
                          const std::vector<std::shared_ptr<Hero> > &heroes_enemy) {

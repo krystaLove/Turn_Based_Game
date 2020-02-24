@@ -1,11 +1,8 @@
 #include "Player.h"
 
-#include <algorithm>
-
 void Player::addHero(std::shared_ptr<Hero> hero) {
     m_Heroes.push_back(hero);
 }
-
 
 const std::shared_ptr<Hero> &Player::getHeroById(int id) {
     return m_Heroes.at(id);
@@ -28,7 +25,7 @@ void Player::showShortInfo() {
 
     for(int i = 0; i < m_Heroes.size(); ++i)
     {
-        printf("[%d]: ", i);
+        std::cout << "[" << i << "]: ";
         m_Heroes[i]->showShortInfo();
     }
     std::cout << std::endl;
@@ -73,5 +70,6 @@ void Player::setTeam(const std::vector<std::shared_ptr<Hero> > team) {
 }
 
 void Player::setHeroById(std::shared_ptr<Hero> &hero, int id) {
+    if(id < 0 || id >= m_Heroes.size()) return;
     m_Heroes[id] = hero;
 }

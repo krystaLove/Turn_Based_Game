@@ -12,15 +12,15 @@ std::shared_ptr<Hero> HeroGenerator::generateHero(Hero::Class type) {
     switch (type)
     {
         case Hero::Class::ARCHER:
-            return std::make_shared<Archer>(Archer());
+            return std::make_shared<Archer>();
         case Hero::Class::APPRENTICE:
-            return std::make_shared<Apprentice>(Apprentice());
+            return std::make_shared<Apprentice>();
         case Hero::Class::SWORDSMAN:
-            return std::make_shared<Swordsman>(Swordsman());
+            return std::make_shared<Swordsman>();
         case Hero::Class::PEASANT:
-            return std::make_shared<Peasant>(Peasant());
+            return std::make_shared<Peasant>();
         case Hero::Class::NONE:
-            return std::make_shared<Peasant>(Peasant());
+            return std::make_shared<Peasant>();
     }
 }
 

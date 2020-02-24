@@ -2,7 +2,7 @@
 #define TURN_BASED_GAME_TEAMMANAGER_H
 
 #include <vector>
-#include "../Model/Player.h"
+#include "../../Model/Player.h"
 
 class TeamManager{
 private:

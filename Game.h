@@ -2,7 +2,7 @@
 #define TURN_BASED_GAME_GAME_H
 
 #include <memory>
-#include "../Model/Player.h"
+#include "Model/Player.h"
 
 class Game {
 private:

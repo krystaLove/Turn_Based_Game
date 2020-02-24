@@ -4,8 +4,8 @@
 
 #include "../Hero.h"
 
-class Archer
-        : public Hero
+class Archer final
+        : public  Hero
 {
 public:
     Archer();

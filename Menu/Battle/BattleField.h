@@ -3,8 +3,7 @@
 
 #include <vector>
 #include <memory>
-
-#include "../Model/Hero.h"
+#include "../../Model/Hero.h"
 
 class BattleField {
 

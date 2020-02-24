@@ -1,9 +1,7 @@
 #include "Game.h"
-#include "../Utils/Console.h"
-#include "../Utils/MenuUtils.h"
-#include "TeamManager.h"
-#include "BattleController.h"
-
+#include "Utils/MenuUtils.h"
+#include "Menu/Battle/BattleController.h"
+#include "Menu/TeamManager/TeamManager.h"
 
 Game::Game() {
     m_Players.push_back(std::make_unique<Player>());

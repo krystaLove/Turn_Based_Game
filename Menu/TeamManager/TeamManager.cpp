@@ -1,8 +1,9 @@
 #include "TeamManager.h"
-#include "../Utils/Console.h"
-#include "../Utils/MenuUtils.h"
-#include "../Configs/GameConfig.h"
-#include "../HeroLogic/HeroGenerator.h"
+#include "../../Utils/Console.h"
+#include "../../Utils/MenuUtils.h"
+#include "../../Configs/GameConfig.h"
+#include "../../HeroLogic/HeroGenerator.h"
+
 
 TeamManager::TeamManager(std::vector<std::shared_ptr<Player> > &players) {
     m_Players = players;
@@ -142,10 +143,12 @@ void TeamManager::_constructTeam(int player_id) {
         {
             player->removeTeam();
 
-            printf("[%d]. Peasant\n", Hero::Class::PEASANT);
-            printf("[%d]. Apprentice\n", Hero::Class::APPRENTICE);
-            printf("[%d]. Archer\n", Hero::Class::ARCHER);
-            printf("[%d]. Swordsman\n", Hero::Class::SWORDSMAN);
+            Console::writeLine("[ Four Base Hero Classes ] \n");
+
+            std::cout << "[" << static_cast<int>(Hero::Class::PEASANT) << "]. Peasant\n";
+            std::cout << "[" << static_cast<int>(Hero::Class::APPRENTICE) << "]. Apprentice\n";
+            std::cout << "[" << static_cast<int>(Hero::Class::ARCHER) << "]. Archer\n";
+            std::cout << "[" << static_cast<int>(Hero::Class::SWORDSMAN) << "]. Swordsman\n";
 
             for(int i = 0; i < MAX_HEROES_PER_PLAYER; ++i)
             {
