@@ -10,6 +10,7 @@ struct HeroGenerator {
     static std::vector<std::shared_ptr<Hero> > generateRandomTeam();
 
     static char getCharForHero(Hero::Class);
+    static void showEncyclopedia();
 
 };
 

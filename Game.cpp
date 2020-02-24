@@ -2,14 +2,17 @@
 #include "Utils/MenuUtils.h"
 #include "Menu/Battle/BattleController.h"
 #include "Menu/TeamManager/TeamManager.h"
+#include "Menu/LevelUp.h"
 
-Game::Game() {
+Game::Game()
+{
     m_Players.push_back(std::make_unique<Player>());
     m_Players.push_back(std::make_unique<Player>());
     m_Run = true;
 }
 
-void Game::run() {
+void Game::run()
+{
     Console::clearScreen();
     Console::writeLine("Welcome to the Game!");
 
@@ -27,7 +30,8 @@ void Game::run() {
     }
 }
 
-void Game::update() {
+void Game::update()
+{
 
     Console::writeLine("= Old Game 0.001alpha =\n");
     Console::writeLine("[1]. Start");
@@ -40,6 +44,7 @@ void Game::update() {
         case MENU_OPTION::EXIT:
         {
             m_Run = false;
+            Console::clearScreen();
             return;
         }
         case MENU_OPTION::MANAGE:
@@ -53,8 +58,9 @@ void Game::update() {
             if(m_Players[0]->isPlayerReady() && m_Players[1]->isPlayerReady()){
                 BattleController battleController(m_Players);
                 battleController.run();
+            } else {
+                Console::waitForPress();
             }
-            Console::waitForPress();
             break;
         }
     }

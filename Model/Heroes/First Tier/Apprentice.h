@@ -2,7 +2,7 @@
 #define TURN_BASED_GAME_APPRENTICE_H
 
 
-#include "../Hero.h"
+#include "../../Hero.h"
 
 class Apprentice
         : public Hero

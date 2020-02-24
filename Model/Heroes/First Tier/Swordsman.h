@@ -2,7 +2,7 @@
 #define TURN_BASED_GAME_SWORDSMAN_H
 
 
-#include "../Hero.h"
+#include "../../Hero.h"
 
 class Swordsman
         : public Hero

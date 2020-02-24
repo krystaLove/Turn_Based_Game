@@ -24,48 +24,107 @@ Hero::Hero(int health, int armor, int damage, int initiative, int exp_kill, int 
     m_Strike = nullptr;
     m_Class = Class::NONE;
 
-    std::cout << "Hero created!\n";
+    //std::cout << "Hero created!\n";
 }
 
-//Getters
+int Hero::getHealth() const
+{
+    return m_Health;
+}
+int Hero::getArmor() const
+{
+    return m_Armor;
+}
+int Hero::getDamage() const
+{
+    return m_Damage;
+}
+int Hero::getInitiative() const
+{
+    return m_Initiative;
+}
 
-int Hero::getHealth() const {return m_Health;}
-int Hero::getArmor() const {return m_Armor;}
-int Hero::getDamage() const {return m_Damage;}
-int Hero::getInitiative() const {return m_Initiative;}
+const std::shared_ptr<Strike> &Hero::getStrike()
+{
+    return m_Strike;
+}
 
-const std::shared_ptr<Position>& Hero::getPosition() const {return m_Position;}
+int Hero::getExperience() const
+{
+    return m_Experience;
+}
 
-bool Hero::isAlive() const {return m_Health > 0;}
+bool Hero::canLevelUp() const
+{
+    return m_Experience >= m_Max_Experience;
+}
 
-void Hero::attack(std::vector< std::shared_ptr<Hero> > & heroes) {
+Hero::Class Hero::getClass() const
+{
+    return m_Class;
+}
+
+const std::shared_ptr<Position>& Hero::getPosition() const
+{
+    return m_Position;
+}
+
+bool Hero::isAlive() const
+{
+    return m_Health > 0;
+}
+
+int Hero::getExperienceForKill() const {
+    return m_ExperienceForKill;
+}
+
+void Hero::setDefend(bool defence) {
+    m_Defend = defence;
+}
+
+void Hero::addExperience(const int exp) {
+    m_Experience += exp;
+    m_Experience = m_Experience > m_Max_Experience ? m_Max_Experience : m_Experience;
+}
+
+void Hero::refreshHero() {
+    m_Defend = false;
+    m_Health = m_Max_Health;
+}
+
+void Hero::attack(std::vector< std::shared_ptr<Hero> > & heroes)
+{
     m_Strike->operator()(heroes);
 }
 
-void Hero::takeDamage(int damage) {
-    if(damage <= 0)
-    {
+void Hero::takeDamage(int damage)
+{
+    if(damage <= 0){
         m_Health -= damage;
         if(m_Health > m_Max_Health)
             m_Health = m_Max_Health;
         return;
     }
+
     auto real_damage = static_cast<float>(damage);
     if(m_Defend) real_damage /= 2;
     real_damage -= (real_damage / MAX_ARMOR) * static_cast<float>(m_Armor);
     m_Health -= static_cast<int>(real_damage);
 }
 
-void Hero::setPosition(const std::shared_ptr<Position> & pos) {
+void Hero::setPosition(const std::shared_ptr<Position> & pos)
+{
     m_Position = pos;
 }
 
-void Hero::move(Position &position) {
+void Hero::move(Position &position)
+{
     m_Position->setX(position.getX());
     m_Position->setY(position.getY());
 }
 
-void Hero::showFullInfo() const{
+void Hero::showFullInfo() const
+{
     std::cout << "[Class: " << getClassName() << "]\n";
     std::cout << "[Health: " << getHealth() << "]\n";
     std::cout << "[Armor: " << getArmor() << "]\n";
@@ -73,39 +132,39 @@ void Hero::showFullInfo() const{
     std::cout << "[Initiative: " << getInitiative() << "]\n";
 }
 
-void Hero::showShortInfo() const{
+void Hero::showShortInfo() const
+{
     std::string strikeType;
 
     switch(m_Strike->getCombatType())
     {
-        case Strike::CombatType::Melee:
+        case Strike::CombatType::MELEE:
         {
             strikeType = "Melee";
             break;
         }
-        case Strike::CombatType::Heal:
+        case Strike::CombatType::HEAL:
         {
             strikeType = "Heal";
             break;
         }
-        case Strike::CombatType::Range:
+        case Strike::CombatType::RANGE:
         {
             strikeType = "Range";
             break;
         }
     }
 
-    printf("[CL: %7s, HP: %3d, AR: %3d, DMG: %3d, INIT: %3d, STRIKE: %6s]\n",
+    printf("[CL: %10s, HP: %3d, AR: %3d, DMG: %3d, INIT: %3d, STRIKE: %8s]\n",
             getClassName().c_str(), getHealth(), getArmor(), getDamage(), getInitiative(), strikeType.c_str());
 }
 
-Hero::Class Hero::getClass() const{
-    return m_Class;
-}
-
-std::string Hero::getClassName(Hero::Class type) {
+std::string Hero::getClassName(Hero::Class type)
+{
     switch(type)
     {
+        case Class::NONE:
+            return "NaN";
         case Class::ARCHER:
             return "Archer";
         case Class::PEASANT:
@@ -114,35 +173,15 @@ std::string Hero::getClassName(Hero::Class type) {
             return "Swordsman";
         case Class::APPRENTICE:
             return "Apprentice";
+
+        case Class::GUNNER:
+            return "Gunner";
+        case Class::KNIGHT:
+            return "Knight";
+        case Class::MONK:
+            return "Monk";
+        case Class::INQUISITOR:
+            return "Inquisitor";
     }
 }
 
-void Hero::setDefend(bool defence) {
-    m_Defend = defence;
-}
-
-const std::shared_ptr<Strike> &Hero::getStrike() {
-    return m_Strike;
-}
-
-int Hero::getExperience() const {
-    return m_Experience;
-}
-
-bool Hero::canLevelUp() const {
-    return m_Experience >= m_Max_Experience;
-}
-
-void Hero::addExperience(const int exp) {
-    m_Experience += exp;
-    m_Experience = m_Experience > m_Max_Experience ? m_Max_Experience : m_Experience;
-}
-
-int Hero::getExperienceForKill() const {
-    return m_ExperienceForKill;
-}
-
-void Hero::refreshHero() {
-    m_Defend = false;
-    m_Health = m_Max_Health;
-}

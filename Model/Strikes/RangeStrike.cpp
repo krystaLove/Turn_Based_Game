@@ -2,11 +2,13 @@
 #include "RangeStrike.h"
 
 RangeStrike::RangeStrike(int damage, const std::shared_ptr<Position> &pos, Strike::StrikeType strikeType, int targets)
-        : Strike(damage, pos, strikeType, targets) {
-    m_CombatType = CombatType::Range;
+        : Strike(damage, pos, strikeType, targets)
+{
+    m_CombatType = CombatType::RANGE;
 }
 
-int RangeStrike::operator()(std::vector< std::shared_ptr<Hero> > & heroes) {
+int RangeStrike::operator()(std::vector< std::shared_ptr<Hero> > & heroes)
+{
     std::cout << "Range Strike!" << std::endl;
     int exp = 0;
     for(auto &hero : heroes)

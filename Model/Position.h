@@ -5,8 +5,6 @@
 #include <iostream>
 
 class Position {
-private:
-    std::pair<int, int> m_Position;
 public:
     Position(std::pair<int, int> pos);
     Position(int x = 0, int y = 0);
@@ -20,6 +18,9 @@ public:
     void setPosition(std::pair<int, int> pos);
 
     friend std::ostream& operator<<(std::ostream& os, const Position& pos);
+
+private:
+    std::pair<int, int> m_Position;
 };
 
 #endif //TURN_BASED_GAME_POSITION_H

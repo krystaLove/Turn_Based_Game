@@ -13,7 +13,12 @@ class Strike;
 class Hero {
 
 public:
-    enum class Class{NONE = -1, PEASANT = 0, APPRENTICE, ARCHER, SWORDSMAN};
+    enum class Class {
+        NONE = -1,
+        PEASANT = 0,
+        APPRENTICE, ARCHER, SWORDSMAN,
+        GUNNER, KNIGHT, MONK, INQUISITOR
+    };
 
     Hero(int health, int armor, int damage, int initiative, int exp_kill, int max_exp);
     virtual ~Hero() = default;

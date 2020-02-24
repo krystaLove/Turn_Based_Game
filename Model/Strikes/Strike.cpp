@@ -1,21 +1,25 @@
 #include "Strike.h"
 
-Strike::Strike(int damage, const std::shared_ptr<Position> & pos, StrikeType strikeType, int targets) {
+Strike::Strike(int damage, const std::shared_ptr<Position> & pos, StrikeType strikeType, int targets)
+{
     m_Damage = damage;
     m_Pos = pos;
     m_Targets = targets;
     m_StrikeType = strikeType;
 }
 
-Strike::CombatType Strike::getCombatType() {
+Strike::CombatType Strike::getCombatType()
+{
     return m_CombatType;
 }
 
-int Strike::getTargets() {
+int Strike::getTargets()
+{
     return m_Targets;
 }
+
 std::vector<std::shared_ptr<Hero> > Strike::getAvailableHeroesForStrike(BattleField::StatusMatrix matrix,
-                                                                            std::vector<std::shared_ptr<Hero> > heroes)
+                                                                            std::vector<std::shared_ptr<Hero> >& heroes)
 {
     std::vector<std::shared_ptr<Hero> > availableForStrike;
 
@@ -29,8 +33,8 @@ std::vector<std::shared_ptr<Hero> > Strike::getAvailableHeroesForStrike(BattleFi
         auto onAttackHeroStatus = matrix[hero->getPosition()->getY()][hero->getPosition()->getX()];
         if
                 (
-                (m_StrikeType == StrikeType::Alias && attackingHeroStatus == onAttackHeroStatus) ||
-                (m_StrikeType == StrikeType::Enemy && attackingHeroStatus != onAttackHeroStatus)
+                (m_StrikeType == StrikeType::ALIAS && attackingHeroStatus == onAttackHeroStatus) ||
+                (m_StrikeType == StrikeType::ENEMY && attackingHeroStatus != onAttackHeroStatus)
                 )
         {
             availableForStrike.push_back(hero);

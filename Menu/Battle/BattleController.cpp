@@ -1,14 +1,16 @@
 #include "BattleController.h"
 #include "../../Utils/Console.h"
 #include "../../Utils/MenuUtils.h"
-#include "../../HeroLogic/LevelUp.h"
 
 #include "../../Model/Strikes/Strike.h"
+#include "../LevelUp.h"
 
 #include <algorithm>
 #include <set>
+#include <iomanip>
 
-BattleController::BattleController(std::vector<std::shared_ptr<Player> > &players) {
+BattleController::BattleController(std::vector<std::shared_ptr<Player> > &players)
+{
     m_Players = players;
     m_Run = false;
     m_Turn = 0;
@@ -21,7 +23,8 @@ BattleController::BattleController(std::vector<std::shared_ptr<Player> > &player
     _refreshHeroes();
 }
 
-void BattleController::run() {
+void BattleController::run()
+{
     m_Run = true;
     while (m_Run)
     {
@@ -29,9 +32,11 @@ void BattleController::run() {
     }
 }
 
-void BattleController::update() {
+void BattleController::update()
+{
     Console::clearScreen();
     END_TYPE isEnd = _checkForEnd();
+
     if(isEnd != END_TYPE::CONTINUE)
     {
         if(isEnd == END_TYPE::ONE_WIN)
@@ -138,14 +143,16 @@ void BattleController::_showOrder() {
     {
         auto hero_player = m_HeroOrder.at(i);
         if(!hero_player.first->isAlive()) continue;
-        printf("%10s - ", m_Players[hero_player.second]->getName().c_str());
+        std::cout << std::setw(12) << m_Players[hero_player.second]->getName();
+        std::cout << " - ";
         hero_player.first->showShortInfo();
     }
     for(int i = 0; i < currentHero; ++i)
     {
         auto hero_player = m_HeroOrder.at(i);
         if(!hero_player.first->isAlive()) continue;
-        printf("%10s - ", m_Players[hero_player.second]->getName().c_str());
+        std::cout << std::setw(12) << m_Players[hero_player.second]->getName();
+        std::cout << " - ";
         hero_player.first->showShortInfo();
     }
 }
@@ -173,7 +180,8 @@ void BattleController::_initPositions() {
     }
 }
 
-std::pair<std::shared_ptr<Hero>, int> & BattleController::_getCurrentTurnHero(){
+std::pair<std::shared_ptr<Hero>, int> & BattleController::_getCurrentTurnHero()
+{
     while(!m_HeroOrder[m_Turn % m_HeroOrder.size()].first->isAlive())
     {
         m_HeroOrder.erase(m_HeroOrder.begin() + m_Turn % m_HeroOrder.size());
@@ -181,7 +189,8 @@ std::pair<std::shared_ptr<Hero>, int> & BattleController::_getCurrentTurnHero(){
     return m_HeroOrder[m_Turn % m_HeroOrder.size()];
 }
 
-bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
+bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero)
+{
     const std::shared_ptr<Strike> & strike = curHero->getStrike();
 
     std::vector<std::shared_ptr<Hero> > available;
@@ -222,7 +231,7 @@ bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
             std::cout << m_Players[0]->getName() << "'s heroes: \n";
             for(auto &hero : firstPlayerTeam)
             {
-                printf("[%d]. ", ++max_option);
+                std::cout << "[" << ++max_option << "]. ";
                 hero->showShortInfo();
             }
             Console::newLine();
@@ -232,7 +241,7 @@ bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
             std::cout << m_Players[1]->getName() << "'s heroes: \n";
             for(auto &hero : secondPlayerTeam)
             {
-                printf("[%d]. ", ++max_option);
+                std::cout << "[" << ++max_option << "]. ";
                 hero->showShortInfo();
             }
             Console::newLine();
@@ -241,7 +250,7 @@ bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
             Console::writeLine("[ Your choice ]\n");
         for(int i = 0; i < toStrike.size(); ++i)
         {
-            printf("[%d]: ", i + 1);
+            std::cout << "[" << i + 1 << "]. ";
             toStrike[i].first->showShortInfo();
         }
 
@@ -311,11 +320,11 @@ bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
 
                 for(int i = 0; i < toStrike.size(); ++i)
                 {
-                    printf("[%d]: ", i + 1);
+                    std::cout << "[" << i + 1 << "]: ";
                     toStrike[i].first->showShortInfo();
                 }
 
-                printf("\n[%d]. Back ", toStrike.size() + 1);
+                std::cout << "[" << toStrike.size() + 1 << "]. Back";
 
                 int hero_pick = MenuUtils::getInput(1, toStrike.size() + 1);
                 if(hero_pick == toStrike.size() + 1) break;
@@ -332,14 +341,16 @@ bool BattleController::_attackOption(std::shared_ptr<Hero> & curHero) {
 
 }
 
-void BattleController::_attackMenu() {
+void BattleController::_attackMenu()
+{
     Console::writeLine("[1]. Apply");
     Console::writeLine("[2]. Add");
     Console::writeLine("[3]. Remove\n");
     Console::writeLine("[4]. Back");
 }
 
-BattleController::END_TYPE BattleController::_checkForEnd() {
+BattleController::END_TYPE BattleController::_checkForEnd()
+{
     bool firstDead = true, secondDead = true;
     for(auto &hero : m_Players[0]->getPlayerTeam())
     {
@@ -362,75 +373,21 @@ BattleController::END_TYPE BattleController::_checkForEnd() {
     return END_TYPE::CONTINUE;
 }
 
-void BattleController::_endBattle(std::shared_ptr<Player> &player) {
+void BattleController::_endBattle(std::shared_ptr<Player> &player)
+{
     Console::writeLine("[ Congratulations! ]\n");
     std::cout << player->getName() <<" won the battle at " << m_Turn << " turn" << std::endl;
 
     Console::waitForPress();
     Console::clearScreen();
 
-    LevelUp levelUp;
+    LevelUp::levelUpPlayerTeam(player);
 
-    for(int hero_id = 0; hero_id < player->getPlayerTeam().size(); ++hero_id)
-    {
-        auto hero = player->getPlayerTeam().at(hero_id);
-        if(!hero->canLevelUp()) continue;
-
-        Console::writeLine("[ Your hero can level up! ]");
-        hero->showShortInfo();
-
-        std::vector<Hero::Class> ways = levelUp.getWaysToLevelUp(hero->getClass());
-        if(ways.empty())
-        {
-            Console::writeLine("There is no ways to transform this hero");
-            Console::waitForPress();
-            Console::clearScreen();
-            continue;
-        }
-
-        Console::writeLine("[ Transform ]");
-        for(int i = 0; i < ways.size(); ++i)
-        {
-            std::cout << "[" << i + 1 << "]. ";
-            switch (ways[i])
-            {
-                case Hero::Class::APPRENTICE:
-                {
-                    std::cout << "Apprentice";
-                    break;
-                }
-                case Hero::Class::ARCHER:
-                {
-                    std::cout << "Archer";
-                    break;
-                }
-                case Hero::Class::SWORDSMAN:
-                {
-                    std::cout << "Swordsman";
-                    break;
-                }
-                case Hero::Class::PEASANT:
-                {
-                    std::cout << "Peasant";
-                    break;
-                }
-            }
-            std::cout << "\n";
-        }
-        std::cout << "[" << ways.size() + 1 << "]. No transform\n";
-
-        int pick = MenuUtils::getInput(1, ways.size() + 1);
-        if(pick == ways.size() + 1) continue;
-
-        auto transformedHero = HeroGenerator::generateHero(ways[pick - 1]);
-        player->setHeroById(transformedHero, hero_id);
-
-        Console::clearScreen();
-    }
     m_Run = false;
 }
 
-void BattleController::_refreshHeroes() {
+void BattleController::_refreshHeroes()
+{
     for(auto &hero : m_Players[0]->getPlayerTeam())
     {
         hero->refreshHero();

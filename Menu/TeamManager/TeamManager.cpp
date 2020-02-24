@@ -5,12 +5,14 @@
 #include "../../HeroLogic/HeroGenerator.h"
 
 
-TeamManager::TeamManager(std::vector<std::shared_ptr<Player> > &players) {
+TeamManager::TeamManager(std::vector<std::shared_ptr<Player> > &players)
+{
     m_Players = players;
     m_Run = true;
 }
 
-void TeamManager::run() {
+void TeamManager::run()
+{
     Console::clearScreen();
     while(m_Run)
     {
@@ -19,16 +21,19 @@ void TeamManager::run() {
 }
 
 
-void TeamManager::_showMenu() {
+void TeamManager::_showMenu()
+{
     Console::writeLine("= Team Managing =\n");
     Console::writeLine("[1]. Construct team from trash");
     Console::writeLine("[2]. Show Team");
     Console::writeLine("[3]. Add Hero");
     Console::writeLine("[4]. Remove Hero\n");
-    Console::writeLine("[5]. Back");
+    Console::writeLine("[5]. Hero Encyclopedia\n");
+    Console::writeLine("[6]. Back");
 }
 
-void TeamManager::update() {
+void TeamManager::update()
+{
     _showMenu();
 
     int option = MenuUtils::getInput(static_cast<int>(MENU_TYPE::CONSTRUCT), static_cast<int>(MENU_TYPE::EXIT));
@@ -81,6 +86,11 @@ void TeamManager::update() {
             }
             break;
         }
+        case MENU_TYPE::ENCYCLOPEDIA:
+            Console::clearScreen();
+            Console::writeLine(" = Encyclopedia =\n");
+            HeroGenerator::showEncyclopedia();
+            break;
     }
     Console::waitForPress();
     Console::clearScreen();
@@ -88,7 +98,8 @@ void TeamManager::update() {
 
 //Manager options
 
-void TeamManager::_addRandomHero(int player_id) {
+void TeamManager::_addRandomHero(int player_id)
+{
     std::shared_ptr<Player> &player = m_Players[player_id];
 
     if(player->getTeamSize() >= MAX_HEROES_PER_PLAYER)
@@ -100,7 +111,8 @@ void TeamManager::_addRandomHero(int player_id) {
     player->addHero(HeroGenerator::generateRandomHero());
 }
 
-void TeamManager::_removeHero(int player_id) {
+void TeamManager::_removeHero(int player_id)
+{
     Console::clearScreen();
 
     std::shared_ptr<Player> & player = m_Players[player_id];
@@ -117,7 +129,8 @@ void TeamManager::_removeHero(int player_id) {
     Console::writeLine("Hero was removed from the team!");
 }
 
-void TeamManager::_constructTeam(int player_id) {
+void TeamManager::_constructTeam(int player_id)
+{
     Console::clearScreen();
     Console::writeLine("Choose: \n");
     Console::writeLine("[1]. Random Team");

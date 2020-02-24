@@ -7,8 +7,8 @@
 
 class Strike {
 public:
-    enum class CombatType {Melee, Range, Heal};
-    enum class StrikeType {Alias, Enemy};
+    enum class CombatType {MELEE, RANGE, HEAL};
+    enum class StrikeType {ALIAS, ENEMY};
 
     Strike(int damage, const std::shared_ptr<Position> & pos, StrikeType strikeType, int targets);
     virtual ~Strike() = default;
@@ -17,7 +17,7 @@ public:
     int getTargets();
 
     virtual std::vector<std::shared_ptr<Hero> > getAvailableHeroesForStrike(BattleField::StatusMatrix matrix,
-                                                                            std::vector<std::shared_ptr<Hero> >) = 0;
+                                                                            std::vector<std::shared_ptr<Hero> >&);
     virtual int operator() (std::vector< std::shared_ptr<Hero> > & heroes) = 0;
 
 protected:

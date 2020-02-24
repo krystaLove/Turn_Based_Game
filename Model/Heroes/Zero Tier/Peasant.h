@@ -2,7 +2,7 @@
 #define TURN_BASED_GAME_PEASANT_H
 
 
-#include "../Hero.h"
+#include "../../Hero.h"
 
 class Peasant
         : public Hero

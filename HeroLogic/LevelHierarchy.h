@@ -1,19 +1,18 @@
-#ifndef TURN_BASED_GAME_LEVELUP_H
-#define TURN_BASED_GAME_LEVELUP_H
+#ifndef TURN_BASED_GAME_LEVELHIERARCHY_H
+#define TURN_BASED_GAME_LEVELHIERARCHY_H
 
 #include <map>
 #include "HeroGenerator.h"
 
-class LevelUp {
+class LevelHierarchy {
 private:
     std::map<Hero::Class, std::vector<Hero::Class> > m_HeroHierarchy;
     void _initHierarchy();
 public:
-    LevelUp();
-    ~LevelUp() = default;
+    LevelHierarchy();
 
     std::vector<Hero::Class>& getWaysToLevelUp(Hero::Class hero);
 };
 
 
-#endif //TURN_BASED_GAME_LEVELUP_H
+#endif //TURN_BASED_GAME_LEVELHIERARCHY_H

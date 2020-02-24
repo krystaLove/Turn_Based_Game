@@ -23,8 +23,8 @@ public:
     int getTeamSize() const;
 
     //Setters
-    void setName(const std::string name);
-    void setTeam(const std::vector< std::shared_ptr<Hero> > team);
+    void setName(std::string name);
+    void setTeam(std::vector< std::shared_ptr<Hero> > team);
     void removeHero(int id);
     void setHeroById(std::shared_ptr<Hero> &hero, int id);
     void removeTeam();

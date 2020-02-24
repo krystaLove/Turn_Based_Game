@@ -11,7 +11,7 @@ public:
     MeleeStrike(int damage, const std::shared_ptr<Position> &pos, Strike::StrikeType strikeType, int targets);
 
     std::vector<std::shared_ptr<Hero> > getAvailableHeroesForStrike(BattleField::StatusMatrix,
-            std::vector<std::shared_ptr<Hero> >) final;
+            std::vector<std::shared_ptr<Hero> >&) final;
 
     int operator() (std::vector< std::shared_ptr<Hero> > & heroes) final;
 };

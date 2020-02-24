@@ -2,7 +2,7 @@
 #define TURN_BASED_GAME_ARCHER_H
 
 
-#include "../Hero.h"
+#include "../../Hero.h"
 
 class Archer final
         : public  Hero
